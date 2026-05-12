@@ -1,5 +1,6 @@
 package com.example.thirdproject.global.security.jwt;
 
+import com.example.thirdproject.auth.service.RefreshTokenService;
 import com.example.thirdproject.global.security.AuthErrorCode;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -20,6 +21,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenService refreshTokenService;
 
     @Override
     protected void doFilterInternal(
@@ -32,8 +34,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             if(token != null && jwtTokenProvider.validateToken(token)) {
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                // 로그아웃 관리
+                // redis에서 토큰 자체를 키로 조회했을 때 값이 있다면 로그아웃된 토큰
+                String isLogout = refreshTokenService.getRefreshToken(token);
+
+                if(isLogout == null) {
+                    Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    request.setAttribute("exception", AuthErrorCode.LOGOUT_TOKEN.getCode() );
+
+                }
+
             }
         } catch (SecurityException | MalformedJwtException e) {
             request.setAttribute("exception", AuthErrorCode.INVALID_TOKEN.getCode());

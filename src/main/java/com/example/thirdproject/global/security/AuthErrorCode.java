@@ -13,7 +13,8 @@ public enum AuthErrorCode {
     UNSUPPORTED_TOKEN("UNSUPPORTED_TOKEN", "지원하지 않는 JWT 토큰입니다."),
     ILLEGAL_TOKEN("ILLEGAL_TOKEN", "토큰이 비거나 잘못된 인자(null)입니다."),
     USER_NOT_FOUND("USER_NOT_FOUND", "유저가 없습니다."),
-    UNAUTHORIZED("UNAUTHORIZED", "인증이 필요한 서비스입니다.");
+    UNAUTHORIZED("UNAUTHORIZED", "인증이 필요한 서비스입니다."),
+    LOGOUT_TOKEN("LOGOUT_TOKEN", "이미 로그아웃된 토큰입니다. 다시 로그인해주세요.");
 
     private final String code;
     private final String message;

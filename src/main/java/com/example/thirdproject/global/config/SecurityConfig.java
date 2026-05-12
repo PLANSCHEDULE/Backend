@@ -1,5 +1,6 @@
 package com.example.thirdproject.global.config;
 
+import com.example.thirdproject.auth.service.RefreshTokenService;
 import com.example.thirdproject.global.security.jwt.JwtAuthenticationEntryPoint;
 import com.example.thirdproject.global.security.jwt.JwtAuthenticationFilter;
 import com.example.thirdproject.global.security.jwt.JwtTokenProvider;
@@ -23,6 +24,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenService refreshTokenService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -53,7 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, refreshTokenService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 
