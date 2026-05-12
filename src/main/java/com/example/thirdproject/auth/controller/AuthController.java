@@ -1,9 +1,6 @@
 package com.example.thirdproject.auth.controller;
 
-import com.example.thirdproject.auth.dto.LoginRequest;
-import com.example.thirdproject.auth.dto.LoginResponse;
-import com.example.thirdproject.auth.dto.SignUpRequest;
-import com.example.thirdproject.auth.dto.SignUpResponse;
+import com.example.thirdproject.auth.dto.*;
 import com.example.thirdproject.auth.service.AuthService;
 import com.example.thirdproject.global.commonResponse.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,7 +36,7 @@ public class AuthController {
                 .body(response);
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(
             @RequestBody LoginRequest loginRequest,
             HttpServletRequest request
@@ -49,5 +46,16 @@ public class AuthController {
         return ResponseEntity.ok(
                 ApiResponse.success("로그인 성공", response, request.getRequestURI())
         );
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<ApiResponse<LoginResponse>> refresh(
+            @RequestBody RefreshRequest refreshRequest,
+            HttpServletRequest request
+            ) {
+        LoginResponse response = authService.refresh(refreshRequest.getRefreshToken());
+
+        return ResponseEntity.ok(ApiResponse.created("토큰 재발급 성공", response, request.getRequestURI()));
+
     }
 }

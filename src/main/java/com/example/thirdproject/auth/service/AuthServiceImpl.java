@@ -69,6 +69,41 @@ public class AuthServiceImpl implements AuthService{
         return response;
     }
 
+    @Override
+    @Transactional
+    public LoginResponse refresh(String refreshToken) {
+        // refresh는 Permitall이어서 이쪽은 exception 따로 잡아줘야 됨(매번 까먹는데 제발 기억하자..)
+        if(!jwtTokenProvider.validateToken(refreshToken)) {
+            throw new IllegalArgumentException("유효하지 않거나 만료된 Refresh Token 입니다.");
+        }
+
+        String email = jwtTokenProvider.getEmail(refreshToken);
+
+        if(!refreshTokenService.isRefreshTokenMatch(email, refreshToken)) {
+            throw new IllegalArgumentException("RefreshToken이 일치하지 않습니다.");
+        }
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        String newAccessToken = jwtTokenProvider.createToken(user.getEmail(), user.getRole().name());
+        String newRefreshToken = jwtTokenProvider.refreshToken(user.getEmail());
+
+        // redis에 업데이트
+        refreshTokenService.saveRefreshToken(
+                user.getEmail(),
+                newRefreshToken,
+                jwtTokenProvider.getRefreshTokenExpiration()
+        );
+
+        return LoginResponse.builder()
+                .accessToken(newAccessToken)
+                .refreshToken(newRefreshToken)
+                .build();
+
+
+    }
+
 
 
 

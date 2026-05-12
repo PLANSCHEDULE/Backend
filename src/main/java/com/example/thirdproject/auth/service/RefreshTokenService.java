@@ -23,4 +23,25 @@ public class RefreshTokenService {
                 Duration.ofMillis(expirationTime)
         );
     }
+
+    // redis에서 이메일을 키로 사용해 refresh token 추출
+    public String getRefreshToken(String email) {
+        return redisTemplate.opsForValue().get(email);
+    }
+
+    // refresh api를 위한 함수
+    // redis에서 저장된 토큰과 일치하는지 확인
+    public boolean isRefreshTokenMatch(String email, String refreshToken) {
+        String storedToken = getRefreshToken(email);
+
+        if (storedToken == null) {
+            return false;
+        }
+
+        if(storedToken.equals(refreshToken)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
