@@ -60,6 +60,14 @@ public class JwtTokenProvider {
 
 
     // token 사용자 추출
+    public String getEmail(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
 
 
     // 토큰 유효성 검증
