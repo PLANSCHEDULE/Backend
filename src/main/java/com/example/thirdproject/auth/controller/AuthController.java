@@ -1,5 +1,7 @@
 package com.example.thirdproject.auth.controller;
 
+import com.example.thirdproject.auth.dto.LoginRequest;
+import com.example.thirdproject.auth.dto.LoginResponse;
 import com.example.thirdproject.auth.dto.SignUpRequest;
 import com.example.thirdproject.auth.dto.SignUpResponse;
 import com.example.thirdproject.auth.service.AuthService;
@@ -35,5 +37,17 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<ApiResponse<LoginResponse>> login(
+            @RequestBody LoginRequest loginRequest,
+            HttpServletRequest request
+            ) {
+        LoginResponse response = authService.login(loginRequest);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("로그인 성공", response, request.getRequestURI())
+        );
     }
 }

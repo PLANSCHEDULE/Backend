@@ -52,6 +52,11 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    // redis 저장 시 만료 시간 확인
+    public long getRefreshTokenExpiration() {
+        return this.refreshTokenExpiration;
+    }
+
     // refresh 토큰 생성
     public String refreshToken(String email) {
         Date now = new Date();
