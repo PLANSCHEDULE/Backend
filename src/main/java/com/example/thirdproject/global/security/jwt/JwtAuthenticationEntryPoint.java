@@ -18,8 +18,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private final ObjectMapper objectMapper;
-
-    @Bean
+    // component쓸 거면 bean등록 x
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authenticationException) throws IOException {
