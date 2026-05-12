@@ -41,6 +41,17 @@ public class JwtTokenProvider {
     }
 
     // refresh 토큰 생성
+    public String refreshToken(String email) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + refreshTokenExpiration);
+
+        return Jwts.builder()
+                .subject(email)
+                .issuedAt(now)
+                .expiration(validity)
+                .signWith(secretKey)
+                .compact();
+    }
 
 
 
