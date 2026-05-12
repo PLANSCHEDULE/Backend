@@ -1,8 +1,12 @@
 package com.example.thirdproject.global.security.jwt;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 
+import io.jsonwebtoken.security.SecurityException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -71,6 +75,20 @@ public class JwtTokenProvider {
 
 
     // 토큰 유효성 검증
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(token);
+            return true;
+        } catch (
+                SecurityException | MalformedJwtException | ExpiredJwtException
+                | UnsupportedJwtException | IllegalArgumentException e) {
+
+            throw e;
+        }
+    }
 
 
     //인증 객체 생성
