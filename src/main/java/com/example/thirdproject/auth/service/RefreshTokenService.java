@@ -44,4 +44,18 @@ public class RefreshTokenService {
             return false;
         }
     }
+
+    public void deleteRefreshToken(String email) {
+        redisTemplate.delete(email);
+    }
+
+    //로그아웃된 access token 블랙리스트 등록
+    // key가 access token, value는 logout, Duration은 토큰의 남은 유효 시간
+    public void blacklistToken(String accessToken, long expirationTime) {
+        redisTemplate.opsForValue().set(
+                accessToken,
+                "logout",
+                Duration.ofMillis(expirationTime)
+        );
+    }
 }

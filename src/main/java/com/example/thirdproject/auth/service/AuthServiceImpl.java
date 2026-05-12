@@ -104,6 +104,18 @@ public class AuthServiceImpl implements AuthService{
 
     }
 
+    @Override
+    @Transactional
+    public void logout(String accessToken) {
+        String email = jwtTokenProvider.getEmail(accessToken);
+
+        refreshTokenService.deleteRefreshToken(email);
+
+        long expiration = jwtTokenProvider.getRemainingMillis(accessToken);
+        refreshTokenService.blacklistToken(accessToken, expiration);
+
+    }
+
 
 
 
