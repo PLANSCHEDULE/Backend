@@ -12,4 +12,7 @@ public interface AuthService {
 
     // 로그인
     LoginResponse login(LoginRequest request);
+
+    // accessToken 재발급 (Refresh)
+    LoginResponse refresh(String refreshToken);
 }
