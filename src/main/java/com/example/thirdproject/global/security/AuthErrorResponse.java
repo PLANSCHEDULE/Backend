@@ -1,8 +1,8 @@
 package com.example.thirdproject.global.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -18,8 +18,9 @@ public class AuthErrorResponse {
 
     public static AuthErrorResponse message(AuthErrorCode errorCode, String path) {
         return AuthErrorResponse.builder()
-                .status(HttpStatus.UNAUTHORIZED.value())
+                .status(HttpServletResponse.SC_UNAUTHORIZED)
                 .error("Unauthorized")
+                .code(errorCode.getCode())
                 .message(errorCode.getMessage())
                 .path(path)
                 .timestamp(LocalDateTime.now().toString())
