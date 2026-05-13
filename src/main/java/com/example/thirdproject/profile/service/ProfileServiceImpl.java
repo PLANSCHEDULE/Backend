@@ -2,7 +2,7 @@ package com.example.thirdproject.profile.service;
 
 import com.example.thirdproject.profile.dto.ProfileRequest;
 import com.example.thirdproject.profile.dto.ProfileResponse;
-import com.example.thirdproject.profile.dto.ProfileUpdateDto;
+import com.example.thirdproject.profile.dto.ProfileUpdate;
 import com.example.thirdproject.profile.entity.Profile;
 import com.example.thirdproject.profile.repository.ProfileRepository;
 import com.example.thirdproject.user.entity.User;
@@ -19,7 +19,7 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     @Transactional
-    public void createProfile(Long userId, ProfileRequest requestDto) {
+    public ProfileResponse createProfile(Long userId, ProfileRequest profileRequest) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
@@ -28,27 +28,25 @@ public class ProfileServiceImpl implements ProfileService{
 
         }
         // 핸들 체크는 api 분리해야될 듯. 그럼 이메일 중복도 중복 체크는 시간되면 다 api 분리해보는걸로 해야될 듯
+        // 생각해보니 api를 따로 만든다쳐도 여기서도 한 번 더 확인해야됨
+        if (profileRepository.existsByHandle(profileRequest.getHandle())) {
+            throw new IllegalArgumentException("이미 사용 중인 핸들입니다.");
+        }
 
-        Profile profile = Profile.builder()
-                .user(user)
-                .handle(requestDto.getHandle()).
-                nickname(requestDto.getNickname())
-                .bio(requestDto.getBio())
-                .build();
+        Profile profile = profileRequest.saveProfile(user);
 
-        profileRepository.save(profile);
+        Profile saveProfile = profileRepository.save(profile);
 
-
-
+        return ProfileResponse.from(saveProfile);
     }
 
     @Override
     @Transactional
-    public ProfileResponse updateProfile(Long userId, ProfileUpdateDto profileUpdateDto) {
+    public ProfileResponse updateProfile(Long userId, ProfileUpdate profileUpdate) {
         Profile profile = profileRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("수정할 프로필이 없습니다."));
 
-        profile.update(profileUpdateDto);
+        profile.update(profileUpdate);
 
         return ProfileResponse.from(profile);
     }

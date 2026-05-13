@@ -2,15 +2,15 @@ package com.example.thirdproject.profile.service;
 
 import com.example.thirdproject.profile.dto.ProfileRequest;
 import com.example.thirdproject.profile.dto.ProfileResponse;
-import com.example.thirdproject.profile.dto.ProfileUpdateDto;
+import com.example.thirdproject.profile.dto.ProfileUpdate;
 
 public interface ProfileService {
 
     // 프로필 생성
-    void createProfile(Long userId, ProfileRequest requestDto);
+    ProfileResponse createProfile(Long userId, ProfileRequest profileRequest);
 
     // 프로필 수정
-    ProfileResponse updateProfile(Long userId, ProfileUpdateDto profileUpdateDto);
+    ProfileResponse updateProfile(Long userId, ProfileUpdate profileUpdate);
 
     // 프로필 삭제
 }

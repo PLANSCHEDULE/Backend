@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProfileUpdateDto {
+public class ProfileUpdate {
     private String nickname;
     private String bio;
 }
