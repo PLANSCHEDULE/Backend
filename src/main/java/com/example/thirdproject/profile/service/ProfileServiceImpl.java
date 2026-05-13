@@ -1,6 +1,7 @@
 package com.example.thirdproject.profile.service;
 
 import com.example.thirdproject.profile.dto.ProfileRequestDto;
+import com.example.thirdproject.profile.dto.ProfileUpdateDto;
 import com.example.thirdproject.profile.entity.Profile;
 import com.example.thirdproject.profile.repository.ProfileRepository;
 import com.example.thirdproject.user.entity.User;
@@ -38,6 +39,15 @@ public class ProfileServiceImpl implements ProfileService{
 
 
 
+    }
+
+    @Override
+    @Transactional
+    public void updateProfile(Long userId, ProfileUpdateDto profileUpdateDto) {
+        Profile profile = profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("수정할 프로필이 없습니다."));
+
+        profile.update(profileUpdateDto);
     }
 
 }
