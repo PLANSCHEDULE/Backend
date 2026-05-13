@@ -1,6 +1,7 @@
 package com.example.thirdproject.profile.entity;
 
 import com.example.thirdproject.global.entity.BaseTime;
+import com.example.thirdproject.profile.dto.ProfileUpdateDto;
 import com.example.thirdproject.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -36,5 +37,15 @@ public class Profile extends BaseTime {
         this.handle = handle;
         this.nickname = nickname;
         this.bio = bio;
+    }
+
+    public void update(ProfileUpdateDto dto) {
+        if(dto.getNickname() != null && !dto.getNickname().isBlank()) {
+            this.nickname = dto.getNickname();
+        }
+        // 공백일 수도 있음
+        if(dto.getBio() != null) {
+            this.bio = dto.getBio();
+        }
     }
 }
