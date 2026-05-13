@@ -48,4 +48,16 @@ public class ProfileController {
         );
 
     }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<ProfileResponse>> getMyProfile(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            HttpServletRequest request
+    ) {
+        ProfileResponse response = profileService.getProfile(userDetails.getUser().getId());
+
+        return ResponseEntity.ok(
+                ApiResponse.success("프로필 조회 성공", response, request.getRequestURI())
+        );
+    }
 }
