@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProfileRequestDto {
+public class ProfileRequest {
     private String handle;
     private String nickname;
     private String bio;
