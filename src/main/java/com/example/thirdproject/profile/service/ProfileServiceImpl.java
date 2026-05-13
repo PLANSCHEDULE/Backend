@@ -51,4 +51,18 @@ public class ProfileServiceImpl implements ProfileService{
         return ProfileResponse.from(profile);
     }
 
+    // 프로필 조회
+    @Override
+    @Transactional
+    public ProfileResponse getProfile(Long userId) {
+        Profile profile = profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("프로필이 존재하지 않습니다."));
+
+        return ProfileResponse.from(profile);
+    }
+
+
+
+    // 회원탈퇴 기능도 만들어야됨.. 회원탈퇴할 때 같이 사라지게 하면 될 듯 프로필 삭제는
+
 }

@@ -13,4 +13,7 @@ public interface ProfileService {
     ProfileResponse updateProfile(Long userId, ProfileUpdate profileUpdate);
 
     // 프로필 삭제
+
+    // 프로필 조회
+    ProfileResponse getProfile(Long userId);
 }
