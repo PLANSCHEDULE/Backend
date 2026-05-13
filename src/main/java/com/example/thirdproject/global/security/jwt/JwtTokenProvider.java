@@ -86,6 +86,22 @@ public class JwtTokenProvider {
                 .toLocalDateTime();
     }
 
+    // 토큰 유효 시간 (redis용)
+    // Redis는 duration 또는 long을 자료형으로 받음
+    public long getRemainingMillis(String token) {
+        Date expiration = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration();
+
+        long now = new Date().getTime();
+        long diff = expiration.getTime() - now;
+
+        return  Math.max(0, diff);
+    }
+
 
 
     // token 사용자 추출

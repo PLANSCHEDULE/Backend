@@ -39,6 +39,4 @@ public class ApiResponse<T> {
         return new ApiResponse<>(HttpStatus.CREATED.value(),message, data, path);
     }
 
-
-
 }

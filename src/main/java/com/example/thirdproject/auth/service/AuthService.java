@@ -15,4 +15,7 @@ public interface AuthService {
 
     // accessToken 재발급 (Refresh)
     LoginResponse refresh(String refreshToken);
+
+    // 로그아웃
+    void logout(String accessToken);
 }

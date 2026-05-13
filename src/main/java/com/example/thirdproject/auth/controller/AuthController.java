@@ -7,10 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -56,6 +53,20 @@ public class AuthController {
         LoginResponse response = authService.refresh(refreshRequest.getRefreshToken());
 
         return ResponseEntity.ok(ApiResponse.created("토큰 재발급 성공", response, request.getRequestURI()));
+
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<Void>> logout(
+            @RequestHeader("Authorization") String authorization,
+            HttpServletRequest request) {
+        String accessToken = authorization.substring(7);
+
+        authService.logout(accessToken);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("로그아웃 되었습니다.", request.getRequestURI())
+        );
 
     }
 }
