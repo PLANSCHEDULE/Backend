@@ -32,6 +32,7 @@ public class Template extends BaseTime {
     // 원작자 handle
     private String originalAuthorHandle;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile owner;
