@@ -29,6 +29,7 @@ public class Profile extends BaseTime {
     private String bio;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
     @Builder
