@@ -8,7 +8,7 @@ import com.example.thirdproject.auth.dto.SignUpResponse;
 
 public interface AuthService {
     // 회원가입
-    SignUpResponse signup(SignUpRequest request);
+    LoginResponse signup(SignUpRequest request);
 
     // 로그인
     LoginResponse login(LoginRequest request);

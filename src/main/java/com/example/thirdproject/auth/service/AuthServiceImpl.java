@@ -22,12 +22,13 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     @Transactional
-    public SignUpResponse signup(SignUpRequest request) {
+    public LoginResponse signup(SignUpRequest request) {
         // exception handler 만들어야됨
         if(userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("이미 가입된 이메일입니다.");
         }
 
+        // 유저 저장
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
         User user = User.builder()
@@ -38,7 +39,25 @@ public class AuthServiceImpl implements AuthService{
 
         User savedUser = userRepository.save(user);
 
-        return SignUpResponse.from(savedUser);
+        // 현재 로직이 회원가입 -> 프로필 작성인데 프로필 작성은 accesstoken이 필요함
+        // 그래서 자동로그인 로직이 필요함
+        String accessToken = jwtTokenProvider.createToken(user.getEmail(), user.getRole().name());
+        String refreshToken = jwtTokenProvider.refreshToken(user.getEmail());
+
+
+        // refresh token 저장
+        refreshTokenService.saveRefreshToken(
+                savedUser.getEmail(),
+                refreshToken,
+                jwtTokenProvider.getRefreshTokenExpiration()
+        );
+
+        LoginResponse response = LoginResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
+        return response;
     }
 
     @Override

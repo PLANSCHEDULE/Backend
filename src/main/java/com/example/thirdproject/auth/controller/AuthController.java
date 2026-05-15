@@ -16,14 +16,14 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse<SignUpResponse>> signup(
+    public ResponseEntity<ApiResponse<LoginResponse>> signup(
             @RequestBody SignUpRequest signUpRequest,
             HttpServletRequest request
             ) {
 
-        SignUpResponse data = authService.signup(signUpRequest);
+        LoginResponse data = authService.signup(signUpRequest);
 
-        ApiResponse<SignUpResponse> response = ApiResponse.created(
+        ApiResponse<LoginResponse> response = ApiResponse.created(
                 "회원가입이 성공적으로 완료되었습니다.",
                 data,
                 request.getRequestURI()
