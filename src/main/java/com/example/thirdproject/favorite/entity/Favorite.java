@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 
         }
 )
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Favorite {
