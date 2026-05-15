@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +27,7 @@ public class Template extends BaseTime {
     // #으로 시작하면 색상, 아니면 이미지 url
     private String background;
 
-    private int downloadCount = 0;
-
-    private String targetDate;
+    private LocalDate targetDate;
 
     // 원작자 handle
     private String originalAuthorHandle;
@@ -43,7 +42,7 @@ public class Template extends BaseTime {
 
 
     @Builder
-    public Template(String title, String background, String targetDate,
+    public Template(String title, String background, LocalDate targetDate,
                     String originalAuthorHandle, Profile owner) {
         this.title = title;
         this.background = background;
@@ -51,6 +50,5 @@ public class Template extends BaseTime {
         this.originalAuthorHandle = originalAuthorHandle;
         this.owner = owner;
     }
-
 
 }

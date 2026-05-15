@@ -17,7 +17,7 @@ public class TemplateItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalTime time;
+    private LocalTime itemTime;
 
     @Column(nullable = false)
     private String content;
@@ -37,8 +37,8 @@ public class TemplateItem {
 
 
     @Builder
-    public TemplateItem(LocalTime time, String content, boolean isCompleted, int sequence, boolean isAlarmOn, Template template) {
-        this.time = time;
+    public TemplateItem(LocalTime itemTime, String content, boolean isCompleted, int sequence, boolean isAlarmOn, Template template) {
+        this.itemTime = itemTime;
         this.content = content;
         this.isCompleted = isCompleted;
         this.sequence = sequence;
