@@ -55,6 +55,7 @@ public class AuthServiceImpl implements AuthService{
         LoginResponse response = LoginResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .userId(savedUser.getUuid())
                 .build();
 
         return response;
@@ -83,6 +84,7 @@ public class AuthServiceImpl implements AuthService{
         LoginResponse response = LoginResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .userId(user.getUuid())
                 .build();
 
         return response;
