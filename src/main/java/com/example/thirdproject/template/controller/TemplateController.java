@@ -8,6 +8,8 @@ import com.example.thirdproject.template.dto.TemplateCreateRequest;
 import com.example.thirdproject.template.dto.TemplateResponse;
 import com.example.thirdproject.template.dto.TemplateUpdateRequest;
 import com.example.thirdproject.template.service.TemplateService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Template controller", description = "템플릿 api")
 @RestController
 @RequestMapping("/api/templates")
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class TemplateController {
     private final ProfileService profileService;
 
     // 템플릿 제작
+    @Operation(summary = "템플릿 생성 api")
     @PostMapping
     public ResponseEntity<ApiResponse<TemplateResponse>> TemplateCreate(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -82,6 +86,7 @@ public class TemplateController {
 //    }
 
     // 템플릿 전체 조회 (pageable 필요)
+    @Operation(summary = "템플릿 전체 조회 api")
     @GetMapping
     public ResponseEntity<ApiResponse<Slice<TemplateResponse>>> getMyAllTemplates(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -97,6 +102,7 @@ public class TemplateController {
     }
 
     // 내가 다운 받은 템플릿 목록 조회
+    @Operation(summary = "사용자가 다운 받은 템플릿 조회 api")
     @GetMapping("/me/downloaded")
     public ResponseEntity<ApiResponse<Slice<TemplateResponse>>> getMyDownloadedTemplates(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -113,6 +119,7 @@ public class TemplateController {
 
     // 템플릿 업데이트 관련 api
     // 통째로 뒤집어쓰는거라 PUT
+    @Operation(summary = "템플릿 수정 api")
     @PutMapping("/{templateId}")
     public ResponseEntity<ApiResponse<TemplateResponse>> updateTemplate(
             @PathVariable Long templateId,
