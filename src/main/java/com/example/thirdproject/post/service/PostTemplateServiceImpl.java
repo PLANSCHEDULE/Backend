@@ -9,10 +9,14 @@ import com.example.thirdproject.profile.repository.ProfileRepository;
 import com.example.thirdproject.template.entity.Template;
 import com.example.thirdproject.template.repository.TemplateRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +78,21 @@ public class PostTemplateServiceImpl implements PostTemplateService{
 
             return PostTemplateResponse.AllPostTemplate(post, isFavorite);
         });
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PostTemplateResponse> getTop10PopularTemplates(Long userId) {
+        Profile currentProfile = profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        List<PostTemplate> posts = postTemplateRepository.findPopularTop(PageRequest.of(0, 10));
+
+        return posts.stream()
+                .map(post -> {
+                    boolean isFavorite = favoriteRepository.existsByProfileAndPostTemplate(currentProfile, post);
+                    return PostTemplateResponse.AllPostTemplate(post, isFavorite);
+                }).toList();
     }
 
 

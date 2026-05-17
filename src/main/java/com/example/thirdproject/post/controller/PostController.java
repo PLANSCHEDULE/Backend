@@ -66,5 +66,5 @@ public class PostController {
     }
 
 
-    // 가장 많이 다운로드 된 인기 템플릿
+    // 가장 많이 다운로드 된 인기 템플릿 (Best 10개만)
 }

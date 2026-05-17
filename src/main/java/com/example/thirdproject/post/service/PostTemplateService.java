@@ -2,9 +2,10 @@ package com.example.thirdproject.post.service;
 
 
 import com.example.thirdproject.post.dto.PostTemplateResponse;
-import com.example.thirdproject.profile.entity.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+
+import java.util.List;
 
 public interface PostTemplateService {
     PostTemplateResponse shareToPost(Long templateId, Long userId);
@@ -12,4 +13,8 @@ public interface PostTemplateService {
     void downloadTemplate(Long postTemplateId, Long userId);
 
     Slice<PostTemplateResponse> getPostWithPaging(Long userId, Pageable pageable);
+
+    // best top 10
+    List<PostTemplateResponse> getTop10PopularTemplates(Long userId);
+
 }
