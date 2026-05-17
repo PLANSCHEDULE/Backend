@@ -1,11 +1,14 @@
 package com.example.thirdproject.template.service;
 
 import com.example.thirdproject.profile.entity.Profile;
+import com.example.thirdproject.profile.repository.ProfileRepository;
 import com.example.thirdproject.template.dto.TemplateCreateRequest;
 import com.example.thirdproject.template.dto.TemplateResponse;
 import com.example.thirdproject.template.entity.Template;
 import com.example.thirdproject.template.repository.TemplateRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +20,7 @@ import java.util.Random;
 @Transactional(readOnly = true)
 public class TemplateServiceImpl implements TemplateService{
     private final TemplateRepository templateRepository;
+    private final ProfileRepository profileRepository;
 
     private static final List<String> PALLETTE = List.of(
             "#FFB380", "#B39DDB", "#A5D6A7", "#90CAF9", "#FFF59D", "#F48FB1", "#80CBC4"
@@ -46,6 +50,18 @@ public class TemplateServiceImpl implements TemplateService{
 
     private String getRandomColor() {
         return PALLETTE.get(new Random().nextInt(PALLETTE.size()));
+    }
+
+    // 내가 다운로드 받은 템플릿 조회
+    @Override
+    @Transactional(readOnly = true)
+    public Slice<TemplateResponse> getMyDownloadedTemplates(Long userId, Pageable pageable) {
+        Profile currentProfile = profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        Slice<Template> downloadedSlice = templateRepository.findDownloadedTemplatesByOwnerId(currentProfile.getId(), pageable);
+
+        return downloadedSlice.map(TemplateResponse::from);
     }
 
 }
