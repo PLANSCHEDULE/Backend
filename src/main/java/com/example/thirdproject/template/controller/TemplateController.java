@@ -1,29 +1,47 @@
 package com.example.thirdproject.template.controller;
 
 import com.example.thirdproject.global.commonResponse.ApiResponse;
+import com.example.thirdproject.global.security.jwt.CustomUserDetails;
+import com.example.thirdproject.profile.entity.Profile;
+import com.example.thirdproject.profile.service.ProfileService;
+import com.example.thirdproject.template.dto.TemplateCreateRequest;
+import com.example.thirdproject.template.dto.TemplateResponse;
+import com.example.thirdproject.template.service.TemplateService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Pageable;
 
 @RestController
 @RequestMapping("/api/templates")
+@RequiredArgsConstructor
 public class TemplateController {
+
+    private final TemplateService templateService;
+    private final ProfileService profileService;
 
     // 템플릿 제작
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> TemplateCreate(HttpServletRequest request) {
-        ApiResponse<Void> response = ApiResponse.created(
-                "템플릿 제작 성공",
-                null,
-                request.getRequestURI()
+    public ResponseEntity<ApiResponse<TemplateResponse>> TemplateCreate(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestBody TemplateCreateRequest templateCreateRequest,
+            HttpServletRequest request) {
+
+        // jwt로 profile 엔티티 조회
+        Profile profile = profileService.findProfileByUserId(userDetails.getUser().getId());
+
+
+        TemplateResponse response = templateService.createTemplate(templateCreateRequest, profile);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                ApiResponse.created("템플릿 생성 완료", response, request.getRequestURI())
         );
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(response);
     }
 
     // 템플릿 수정
