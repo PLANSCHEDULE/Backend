@@ -81,4 +81,6 @@ public class PostController {
                 ApiResponse.success("인기 템플릿 TOP 10 조회 완료", response, request.getRequestURI())
         );
     }
+
+    // 템플릿 검색 api 필요
 }

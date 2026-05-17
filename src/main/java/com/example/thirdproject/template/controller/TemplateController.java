@@ -45,32 +45,32 @@ public class TemplateController {
 
     }
 
-    // 템플릿 수정
-    @PatchMapping("/{templateId}")
-    public ResponseEntity<ApiResponse<Void>> updateTemplate(
-            HttpServletRequest request
-    ) {
-        return ResponseEntity.ok(ApiResponse.success("특정 템플릿 조회", null, request.getRequestURI()));
-    }
+//    // 템플릿 수정
+//    @PatchMapping("/{templateId}")
+//    public ResponseEntity<ApiResponse<Void>> updateTemplate(
+//            HttpServletRequest request
+//    ) {
+//        return ResponseEntity.ok(ApiResponse.success("특정 템플릿 조회", null, request.getRequestURI()));
+//    }
 
 
     // 특정 템플릿 조회
-    @GetMapping("/{templateId}")
-    public ResponseEntity<ApiResponse<Void>> getTemplate(
-            HttpServletRequest request
-    ) {
-
-        return ResponseEntity.ok(ApiResponse.success("특정 템플릿 조회", null, request.getRequestURI()));
-
-    }
+//    @GetMapping("/{templateId}")
+//    public ResponseEntity<ApiResponse<Void>> getTemplate(
+//            HttpServletRequest request
+//    ) {
+//
+//        return ResponseEntity.ok(ApiResponse.success("특정 템플릿 조회", null, request.getRequestURI()));
+//
+//    }
 
     // 템플릿 삭제
-    @DeleteMapping("/{templateId}")
-    public ResponseEntity<ApiResponse<Void>> DeleteTemplate(
-            HttpServletRequest request
-    ) {
-        return ResponseEntity.ok(ApiResponse.success("", null, request.getRequestURI()));
-    }
+//    @DeleteMapping("/{templateId}")
+//    public ResponseEntity<ApiResponse<Void>> DeleteTemplate(
+//            HttpServletRequest request
+//    ) {
+//        return ResponseEntity.ok(ApiResponse.success("", null, request.getRequestURI()));
+//    }
 
     // 템플릿 검색 조회 (pageable 필요)
 //    @GetMapping
