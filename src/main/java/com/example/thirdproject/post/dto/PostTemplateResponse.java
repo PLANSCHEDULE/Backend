@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostTemplateResponseDto {
+public class PostTemplateResponse {
     private Long postTemplateId;
     private String title;
     private String background;
     private String authorHandle;
 
-    public static PostTemplateResponseDto from(PostTemplate postTemplate) {
-        return PostTemplateResponseDto.builder()
+    public static PostTemplateResponse from(PostTemplate postTemplate) {
+        return PostTemplateResponse.builder()
                 .postTemplateId(postTemplate.getId())
                 .title(postTemplate.getTitle())
                 .background(postTemplate.getBackground())
