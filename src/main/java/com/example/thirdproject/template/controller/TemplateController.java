@@ -10,14 +10,13 @@ import com.example.thirdproject.template.dto.TemplateUpdateRequest;
 import com.example.thirdproject.template.service.TemplateService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.awt.print.Pageable;
 
 @RestController
 @RequestMapping("/api/templates")
@@ -83,6 +82,19 @@ public class TemplateController {
 //    }
 
     // 템플릿 전체 조회 (pageable 필요)
+    @GetMapping
+    public ResponseEntity<ApiResponse<Slice<TemplateResponse>>> getMyAllTemplates(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PageableDefault(size = 10)Pageable pageable,
+            HttpServletRequest request
+            ) {
+        Slice<TemplateResponse> response =
+                templateService.getMyAllTemplates(userDetails.getUser().getId(), pageable);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("내 템플릿 전체 조회 완료", response, request.getRequestURI())
+        );
+    }
 
     // 내가 다운 받은 템플릿 목록 조회
     @GetMapping("/me/downloaded")

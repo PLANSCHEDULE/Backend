@@ -91,6 +91,7 @@ public class TemplateServiceImpl implements TemplateService{
 
     }
 
+    // 내 템플릿 전체 조회
     @Override
     @Transactional(readOnly = true)
     public Slice<TemplateResponse> getMyAllTemplates(Long userId, Pageable pageable) {
