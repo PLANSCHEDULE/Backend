@@ -20,7 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Template controller", description = "템플릿 api")
+@Tag(name = "Template controller", description = "템플릿 controller")
 @RestController
 @RequestMapping("/api/templates")
 @RequiredArgsConstructor

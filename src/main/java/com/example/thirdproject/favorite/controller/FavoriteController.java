@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Favorite controller", description = "찜 관련 api")
+@Tag(name = "Favorite controller", description = "찜 관련 controller")
 @RestController
 @RequestMapping("/api/favorites")
 @RequiredArgsConstructor

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Post controller", description = "공유된 템플릿 관련 api")
+@Tag(name = "Post controller", description = "공유된 템플릿 관련 controller")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/posts")

@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Profile controller", description = "프로필 api")
+@Tag(name = "Profile controller", description = "프로필 controller")
 @RestController
 @RequestMapping("/api/profiles")
 @RequiredArgsConstructor
