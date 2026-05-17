@@ -6,6 +6,7 @@ import com.example.thirdproject.profile.entity.Profile;
 import com.example.thirdproject.profile.service.ProfileService;
 import com.example.thirdproject.template.dto.TemplateCreateRequest;
 import com.example.thirdproject.template.dto.TemplateResponse;
+import com.example.thirdproject.template.dto.TemplateUpdateRequest;
 import com.example.thirdproject.template.service.TemplateService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -96,6 +97,23 @@ public class TemplateController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 ApiResponse.success("다운로드 받은 템플릿 목록 조회 완료", response, request.getRequestURI())
         );
+    }
+
+    // 템플릿 업데이트 관련 api
+    // 통째로 뒤집어쓰는거라 PUT
+    @PutMapping("/{templateId}")
+    public ResponseEntity<ApiResponse<TemplateResponse>> updateTemplate(
+            @PathVariable Long templateId,
+            @RequestBody TemplateUpdateRequest updateRequest,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            HttpServletRequest request
+            ) {
+        TemplateResponse response =
+                templateService.updateTemplate(templateId, userDetails.getUser().getId(), updateRequest);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success("일정이 수정되었습니다.", response, request.getRequestURI())
+                );
     }
 
 }
