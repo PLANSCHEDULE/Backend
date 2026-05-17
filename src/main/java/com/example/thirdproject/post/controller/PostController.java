@@ -36,6 +36,18 @@ public class PostController {
 
     }
     // 다운로드 수 증가 로직
+    @PostMapping("/{postTemplateId}/download")
+    public ResponseEntity<ApiResponse<Void>> downloadTemplate(
+            @PathVariable Long postTemplateId,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            HttpServletRequest request
+    ) {
+        postTemplateService.downloadTemplate(postTemplateId, userDetails.getUser().getId());
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                ApiResponse.success("템플릿 다운로드 완료", null, request.getRequestURI())
+        );
+    }
 
 
     // 가장 많이 다운로드 된 인기 템플릿
