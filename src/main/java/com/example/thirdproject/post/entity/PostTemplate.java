@@ -1,4 +1,4 @@
-package com.example.thirdproject.community.entity;
+package com.example.thirdproject.post.entity;
 
 import com.example.thirdproject.global.entity.BaseTime;
 import com.example.thirdproject.profile.entity.Profile;

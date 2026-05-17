@@ -1,4 +1,4 @@
-package com.example.thirdproject.community.entity;
+package com.example.thirdproject.post.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

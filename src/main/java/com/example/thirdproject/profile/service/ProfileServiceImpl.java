@@ -61,7 +61,12 @@ public class ProfileServiceImpl implements ProfileService{
         return ProfileResponse.from(profile);
     }
 
-
+    // 프로필 반환 (template용)
+    @Override
+    public Profile findProfileByUserId(Long userId) {
+        return profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자의 프로필을 찾을 수 없습니다. ID:" +  + userId));
+    }
 
     // 회원탈퇴 기능도 만들어야됨.. 회원탈퇴할 때 같이 사라지게 하면 될 듯 프로필 삭제는
 

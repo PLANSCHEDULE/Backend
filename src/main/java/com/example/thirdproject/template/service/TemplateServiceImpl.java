@@ -2,6 +2,7 @@ package com.example.thirdproject.template.service;
 
 import com.example.thirdproject.profile.entity.Profile;
 import com.example.thirdproject.template.dto.TemplateCreateRequest;
+import com.example.thirdproject.template.dto.TemplateResponse;
 import com.example.thirdproject.template.entity.Template;
 import com.example.thirdproject.template.repository.TemplateRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class TemplateServiceImpl implements TemplateService{
     // 템플릿 생성
     @Override
     @Transactional
-    public Long createTemplate(TemplateCreateRequest request, Profile owner) {
+    public TemplateResponse createTemplate(TemplateCreateRequest request, Profile owner) {
 
         // 배경 결정
         // 사진이 있다면 그대로 사용, 없으면 랜덤 색상 배치
@@ -36,7 +37,9 @@ public class TemplateServiceImpl implements TemplateService{
         // Template 엔티티 생성
         Template template = request.toEntity(owner, setBackground);
 
-        return templateRepository.save(template).getId();
+        Template saveTemplate = templateRepository.save(template);
+
+        return TemplateResponse.from(saveTemplate);
 
     }
 

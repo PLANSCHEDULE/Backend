@@ -1,4 +1,4 @@
-package com.example.thirdproject.community.controller;
+package com.example.thirdproject.post.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

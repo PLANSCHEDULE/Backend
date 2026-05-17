@@ -1,6 +1,6 @@
 package com.example.thirdproject.favorite.entity;
 
-import com.example.thirdproject.community.entity.PostTemplate;
+import com.example.thirdproject.post.entity.PostTemplate;
 import com.example.thirdproject.profile.entity.Profile;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
