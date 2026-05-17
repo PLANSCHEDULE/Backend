@@ -4,6 +4,7 @@ import com.example.thirdproject.profile.entity.Profile;
 import com.example.thirdproject.profile.repository.ProfileRepository;
 import com.example.thirdproject.template.dto.TemplateCreateRequest;
 import com.example.thirdproject.template.dto.TemplateResponse;
+import com.example.thirdproject.template.dto.TemplateUpdateRequest;
 import com.example.thirdproject.template.entity.Template;
 import com.example.thirdproject.template.repository.TemplateRepository;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +63,32 @@ public class TemplateServiceImpl implements TemplateService{
         Slice<Template> downloadedSlice = templateRepository.findDownloadedTemplatesByOwnerId(currentProfile.getId(), pageable);
 
         return downloadedSlice.map(TemplateResponse::from);
+    }
+
+    // 템플릿 업데이트
+    @Override
+    @Transactional
+    public TemplateResponse updateTemplate(Long templateId, Long userId, TemplateUpdateRequest request) {
+        Template template = templateRepository.findById(templateId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 일정을 찾을 수 없습니다."));
+
+        // 소유권자가 아닐 경우
+        if (!template.getOwner().getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("이 일정을 수정할 권한이 없습니다.");
+        }
+
+        template.updateTemplate(request.getTitle(), request.getTargetDate());
+
+        template.getItems().clear();
+
+        if(request.getItems() != null) {
+            request.getItems().stream()
+                    .map(itemDto -> itemDto.toEntity(template))
+                    .forEach(item -> template.getItems().add(item));
+        }
+
+        return TemplateResponse.from(template);
+
     }
 
 }
