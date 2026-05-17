@@ -4,6 +4,8 @@ import com.example.thirdproject.global.commonResponse.ApiResponse;
 import com.example.thirdproject.global.security.jwt.CustomUserDetails;
 import com.example.thirdproject.post.dto.PostTemplateResponse;
 import com.example.thirdproject.post.service.PostTemplateService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Post controller", description = "공유된 템플릿 관련 controller")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/posts")
@@ -24,6 +27,7 @@ public class PostController {
     private final PostTemplateService postTemplateService;
 
     // 템플릿 공유
+    @Operation(summary = "템플릿 공유")
     @PostMapping("/share/{templateId}")
     public ResponseEntity<ApiResponse<PostTemplateResponse>> shareTemplate(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -39,6 +43,7 @@ public class PostController {
 
     }
     // 다운로드 수 증가 로직
+    @Operation(summary = "템플릿 다운로드 수 조회")
     @PostMapping("/{postTemplateId}/download")
     public ResponseEntity<ApiResponse<Void>> downloadTemplate(
             @PathVariable Long postTemplateId,
@@ -53,6 +58,7 @@ public class PostController {
     }
 
     // 전체 공유된 템플릿 조회
+    @Operation(summary = "공유된 템플릿 전체 조회")
     @GetMapping("/paging")
     public ResponseEntity<ApiResponse<Slice<PostTemplateResponse>>> getAllTemplates(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -69,6 +75,7 @@ public class PostController {
 
 
     // 가장 많이 다운로드 된 인기 템플릿 (Best 10개만)
+    @Operation(summary = "다운로드 많은 템플릿 Best 10")
     @GetMapping("/top10")
     public ResponseEntity<ApiResponse<List<PostTemplateResponse>>> getTop10(
             @AuthenticationPrincipal CustomUserDetails userDetails,

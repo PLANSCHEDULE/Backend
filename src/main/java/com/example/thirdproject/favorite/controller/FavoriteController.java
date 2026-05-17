@@ -4,6 +4,8 @@ import com.example.thirdproject.favorite.service.FavoriteService;
 import com.example.thirdproject.global.commonResponse.ApiResponse;
 import com.example.thirdproject.global.security.jwt.CustomUserDetails;
 import com.example.thirdproject.post.dto.PostTemplateResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Favorite controller", description = "찜 관련 controller")
 @RestController
 @RequestMapping("/api/favorites")
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     // 찜 토클
+    @Operation(summary = "찜 토클 api")
     @PostMapping("/{postTemplateId}")
     public ResponseEntity<ApiResponse<Void>> toggleFavorite(
             @PathVariable Long postTemplateId,
@@ -37,6 +41,7 @@ public class FavoriteController {
 
 
     // 찜한 템플릿 전체 조회
+    @Operation(summary = "사용자가 찜한 템플릿 전체 조회 api")
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<Slice<PostTemplateResponse>>> getMyLikedPosts(
             @AuthenticationPrincipal CustomUserDetails userDetails,
