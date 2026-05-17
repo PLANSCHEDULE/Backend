@@ -1,6 +1,7 @@
 package com.example.thirdproject.template.entity;
 
 import com.example.thirdproject.global.entity.BaseTime;
+import com.example.thirdproject.post.entity.PostTemplate;
 import com.example.thirdproject.profile.entity.Profile;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -50,6 +51,22 @@ public class Template extends BaseTime {
         this.targetDate = targetDate;
         this.originalAuthorHandle = originalAuthorHandle;
         this.owner = owner;
+    }
+
+    public static Template createFromPost(PostTemplate postTemplate, Profile owner) {
+        Template newTemplate = Template.builder()
+                .title(postTemplate.getTitle())
+                .background(postTemplate.getBackground())
+                .originalAuthorHandle(postTemplate.getAuthor().getHandle())
+                .owner(owner)
+                .build();
+
+        List<TemplateItem> myItems = postTemplate.getItems().stream()
+                .map(postItem -> TemplateItem.fromPostItem(postItem, newTemplate))
+                .toList();
+
+        newTemplate.getItems().addAll(myItems);
+        return newTemplate;
     }
 
 }

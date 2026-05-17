@@ -9,6 +9,7 @@ import com.example.thirdproject.template.dto.TemplateResponse;
 import com.example.thirdproject.template.service.TemplateService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,16 +73,29 @@ public class TemplateController {
     }
 
     // 템플릿 검색 조회 (pageable 필요)
-    @GetMapping
-    public ResponseEntity<ApiResponse<Void>> searchTemplates(
-            @PageableDefault(page = 0, size = 6) Pageable pageable,
-            HttpServletRequest request
-    ) {
-        return null;
-    }
+//    @GetMapping
+//    public ResponseEntity<ApiResponse<Void>> searchTemplates(
+//            @PageableDefault(page = 0, size = 6) Pageable pageable,
+//            HttpServletRequest request
+//    ) {
+//        return null;
+//    }
 
     // 템플릿 전체 조회 (pageable 필요)
 
-    // 인기 템플릿 조회 (한 6개 정도?)
+    // 내가 다운 받은 템플릿 목록 조회
+    @GetMapping("/me/downloaded")
+    public ResponseEntity<ApiResponse<Slice<TemplateResponse>>> getMyDownloadedTemplates(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PageableDefault(size = 10)org.springframework.data.domain.Pageable pageable,
+            HttpServletRequest request
+            ) {
+        Slice<TemplateResponse> response =
+                templateService.getMyDownloadedTemplates(userDetails.getUser().getId(), pageable);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                ApiResponse.success("다운로드 받은 템플릿 목록 조회 완료", response, request.getRequestURI())
+        );
+    }
 
 }

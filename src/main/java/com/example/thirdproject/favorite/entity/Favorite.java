@@ -42,5 +42,12 @@ public class Favorite {
         this.postTemplate = postTemplate;
     }
 
+    public static Favorite of(Profile profile, PostTemplate postTemplate) {
+        return Favorite.builder()
+                .profile(profile)
+                .postTemplate(postTemplate)
+                .build();
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.thirdproject.template.entity;
 
+import com.example.thirdproject.post.entity.PostTemplateItem;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -44,6 +45,17 @@ public class TemplateItem {
         this.sequence = sequence;
         this.isAlarmOn = isAlarmOn;
         this.template = template;
+    }
+
+    public static TemplateItem fromPostItem(PostTemplateItem postTemplateItem, Template template) {
+        return TemplateItem.builder()
+                .itemTime(postTemplateItem.getItemTime())
+                .content(postTemplateItem.getContent())
+                .isCompleted(false)
+                .sequence(postTemplateItem.getSequence())
+                .isAlarmOn(false)
+                .template(template)
+                .build();
     }
 
 }
