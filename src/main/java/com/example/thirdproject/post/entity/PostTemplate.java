@@ -71,4 +71,9 @@ public class PostTemplate extends BaseTime {
             this.favoriteCount -= 1;
         }
     }
+
+    // 다운로드 수 증가
+    public void increaseDownloadCount() {
+        this.downloadCount += 1;
+    }
 }

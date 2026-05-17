@@ -1,5 +1,6 @@
 package com.example.thirdproject.template.dto;
 
+import com.example.thirdproject.post.entity.PostTemplateItem;
 import com.example.thirdproject.template.entity.Template;
 import com.example.thirdproject.template.entity.TemplateItem;
 import lombok.AllArgsConstructor;
