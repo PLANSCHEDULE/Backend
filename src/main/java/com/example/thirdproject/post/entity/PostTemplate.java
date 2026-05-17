@@ -61,4 +61,14 @@ public class PostTemplate extends BaseTime {
         postTemplate.getItems().addAll(postItems);
         return postTemplate;
     }
+
+    public void addFavoriteCount() {
+        this.favoriteCount += 1;
+    }
+
+    public void subtractFavoriteCount() {
+        if(this.favoriteCount > 0) {
+            this.favoriteCount -= 1;
+        }
+    }
 }
