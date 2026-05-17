@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/posts")
@@ -67,4 +69,16 @@ public class PostController {
 
 
     // 가장 많이 다운로드 된 인기 템플릿 (Best 10개만)
+    @GetMapping("/top10")
+    public ResponseEntity<ApiResponse<List<PostTemplateResponse>>> getTop10(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            HttpServletRequest request
+    ) {
+        List<PostTemplateResponse> response =
+                postTemplateService.getTop10PopularTemplates(userDetails.getUser().getId());
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                ApiResponse.success("인기 템플릿 TOP 10 조회 완료", response, request.getRequestURI())
+        );
+    }
 }
