@@ -46,10 +46,11 @@ public class PostTemplate extends BaseTime {
         this.author = author;
     }
 
-    public PostTemplate createSnapshot(Template template, Profile author) {
+    // 오류 _> static이 아니여서 못찾고 있었음. 그리고 backgorund에 getbackground로 수정
+    public static PostTemplate createSnapshot(Template template, Profile author) {
         PostTemplate postTemplate = PostTemplate.builder()
                 .title(template.getTitle())
-                .background(template.getTitle())
+                .background(template.getBackground())
                 .author(author)
                 .build();
 
