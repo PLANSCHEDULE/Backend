@@ -10,4 +10,8 @@ import java.util.Optional;
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     // 특정 유저가 좋아요를 눌렀는지 여부
     Optional<Favorite> findByProfileAndPostTemplate(Profile profile, PostTemplate postTemplate);
+
+    // 공유한 템플릿 조회 시 내가 좋아요 눌렀는지 확인하기 위해
+    // exist에 꼭 s 붙이자.. 저번에도 그런거 같은데 조심해야됨.
+    boolean existsByProfileAndPostTemplate(Profile profile, PostTemplate postTemplate);
 }

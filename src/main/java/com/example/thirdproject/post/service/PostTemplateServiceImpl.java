@@ -1,5 +1,6 @@
 package com.example.thirdproject.post.service;
 
+import com.example.thirdproject.favorite.repository.FavoriteRepository;
 import com.example.thirdproject.post.dto.PostTemplateResponse;
 import com.example.thirdproject.post.entity.PostTemplate;
 import com.example.thirdproject.post.repository.PostTemplateRepository;
@@ -8,6 +9,8 @@ import com.example.thirdproject.profile.repository.ProfileRepository;
 import com.example.thirdproject.template.entity.Template;
 import com.example.thirdproject.template.repository.TemplateRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +21,10 @@ public class PostTemplateServiceImpl implements PostTemplateService{
     private final TemplateRepository templateRepository;
     private final PostTemplateRepository postTemplateRepository;
     private final ProfileRepository profileRepository;
+    private final FavoriteRepository favoriteRepository;
 
     // ? override왜 까먹었지
+    // 템플릿 공유하기
     @Override
     @Transactional
     public PostTemplateResponse shareToPost(Long templateId, Long userId) {
@@ -53,6 +58,22 @@ public class PostTemplateServiceImpl implements PostTemplateService{
         Template myNewTemplate = Template.createFromPost(postTemplate, downloader);
         templateRepository.save(myNewTemplate);
 
+    }
+
+    // 공유된 템플릿 전체 조회용
+    @Override
+    @Transactional(readOnly = true)
+    public Slice<PostTemplateResponse> getPostWithPaging(Long userId, Pageable pageable) {
+        Profile currentProfile = profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        Slice<PostTemplate> postSlice = postTemplateRepository.findSliceWithAuthor(pageable);
+
+        return postSlice.map(post -> {
+            boolean isFavorite = favoriteRepository.existsByProfileAndPostTemplate(currentProfile, post);
+
+            return PostTemplateResponse.AllPostTemplate(post, isFavorite);
+        });
     }
 
 
