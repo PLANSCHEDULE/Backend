@@ -91,4 +91,19 @@ public class TemplateServiceImpl implements TemplateService{
 
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Slice<TemplateResponse> getMyAllTemplates(Long userId, Pageable pageable) {
+        Profile currentProfile = profileRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+
+        Slice<Template> templateSlice = templateRepository.findSliceByOwnerId(currentProfile.getId(), pageable);
+
+
+        return templateSlice.map(TemplateResponse::from);
+    }
+
+
+
 }

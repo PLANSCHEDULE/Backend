@@ -7,6 +7,7 @@ import com.example.thirdproject.template.dto.TemplateUpdateRequest;
 import com.example.thirdproject.template.entity.Template;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface TemplateService {
     TemplateResponse createTemplate(TemplateCreateRequest request, Profile owner);
@@ -16,4 +17,8 @@ public interface TemplateService {
 
     // 템플릿 수정
     TemplateResponse updateTemplate(Long templateId, Long userId, TemplateUpdateRequest request);
+
+    // 템플릿 전체 조회
+    @Transactional(readOnly = true)
+    public Slice<TemplateResponse> getMyAllTemplates(Long userId, Pageable pageable);
 }
