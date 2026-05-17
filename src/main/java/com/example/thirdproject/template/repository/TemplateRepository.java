@@ -19,4 +19,9 @@ public interface TemplateRepository extends JpaRepository<Template, Long> {
     // 사용자의 다운로드 받은 일정만 조회
     @Query("SELECT t FROM Template t WHERE t.owner.id = :ownerId AND t.originalAuthorHandle IS NOT NULL ORDER BY t.createdAt DESC")
     Slice<Template> findDownloadedTemplatesByOwnerId(Long ownerId, Pageable pageable);
+
+    // 내 템플릿 전체 조회
+    @Query("SELECT t FROM Template t WHERE t.owner.id = :profileId ORDER BY t.targetDate DESC, t.createdAt DESC")
+    Slice<Template> findSliceByOwnerId(Long profileId, Pageable pageable);
+
 }

@@ -69,4 +69,14 @@ public class Template extends BaseTime {
         return newTemplate;
     }
 
+    // 업데이트
+    public void updateTemplate(String title, LocalDate targetDate) {
+        if(title != null & !title.isBlank()) {
+            this.title = title;
+        }
+        if(targetDate != null) {
+            this.targetDate = targetDate;
+        }
+    }
+
 }

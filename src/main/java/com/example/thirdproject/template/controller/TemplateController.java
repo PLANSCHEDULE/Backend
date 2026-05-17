@@ -6,17 +6,17 @@ import com.example.thirdproject.profile.entity.Profile;
 import com.example.thirdproject.profile.service.ProfileService;
 import com.example.thirdproject.template.dto.TemplateCreateRequest;
 import com.example.thirdproject.template.dto.TemplateResponse;
+import com.example.thirdproject.template.dto.TemplateUpdateRequest;
 import com.example.thirdproject.template.service.TemplateService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.awt.print.Pageable;
 
 @RestController
 @RequestMapping("/api/templates")
@@ -45,32 +45,32 @@ public class TemplateController {
 
     }
 
-    // 템플릿 수정
-    @PatchMapping("/{templateId}")
-    public ResponseEntity<ApiResponse<Void>> updateTemplate(
-            HttpServletRequest request
-    ) {
-        return ResponseEntity.ok(ApiResponse.success("특정 템플릿 조회", null, request.getRequestURI()));
-    }
+//    // 템플릿 수정
+//    @PatchMapping("/{templateId}")
+//    public ResponseEntity<ApiResponse<Void>> updateTemplate(
+//            HttpServletRequest request
+//    ) {
+//        return ResponseEntity.ok(ApiResponse.success("특정 템플릿 조회", null, request.getRequestURI()));
+//    }
 
 
     // 특정 템플릿 조회
-    @GetMapping("/{templateId}")
-    public ResponseEntity<ApiResponse<Void>> getTemplate(
-            HttpServletRequest request
-    ) {
-
-        return ResponseEntity.ok(ApiResponse.success("특정 템플릿 조회", null, request.getRequestURI()));
-
-    }
+//    @GetMapping("/{templateId}")
+//    public ResponseEntity<ApiResponse<Void>> getTemplate(
+//            HttpServletRequest request
+//    ) {
+//
+//        return ResponseEntity.ok(ApiResponse.success("특정 템플릿 조회", null, request.getRequestURI()));
+//
+//    }
 
     // 템플릿 삭제
-    @DeleteMapping("/{templateId}")
-    public ResponseEntity<ApiResponse<Void>> DeleteTemplate(
-            HttpServletRequest request
-    ) {
-        return ResponseEntity.ok(ApiResponse.success("", null, request.getRequestURI()));
-    }
+//    @DeleteMapping("/{templateId}")
+//    public ResponseEntity<ApiResponse<Void>> DeleteTemplate(
+//            HttpServletRequest request
+//    ) {
+//        return ResponseEntity.ok(ApiResponse.success("", null, request.getRequestURI()));
+//    }
 
     // 템플릿 검색 조회 (pageable 필요)
 //    @GetMapping
@@ -82,6 +82,19 @@ public class TemplateController {
 //    }
 
     // 템플릿 전체 조회 (pageable 필요)
+    @GetMapping
+    public ResponseEntity<ApiResponse<Slice<TemplateResponse>>> getMyAllTemplates(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PageableDefault(size = 10)Pageable pageable,
+            HttpServletRequest request
+            ) {
+        Slice<TemplateResponse> response =
+                templateService.getMyAllTemplates(userDetails.getUser().getId(), pageable);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("내 템플릿 전체 조회 완료", response, request.getRequestURI())
+        );
+    }
 
     // 내가 다운 받은 템플릿 목록 조회
     @GetMapping("/me/downloaded")
@@ -96,6 +109,23 @@ public class TemplateController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 ApiResponse.success("다운로드 받은 템플릿 목록 조회 완료", response, request.getRequestURI())
         );
+    }
+
+    // 템플릿 업데이트 관련 api
+    // 통째로 뒤집어쓰는거라 PUT
+    @PutMapping("/{templateId}")
+    public ResponseEntity<ApiResponse<TemplateResponse>> updateTemplate(
+            @PathVariable Long templateId,
+            @RequestBody TemplateUpdateRequest updateRequest,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            HttpServletRequest request
+            ) {
+        TemplateResponse response =
+                templateService.updateTemplate(templateId, userDetails.getUser().getId(), updateRequest);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponse.success("일정이 수정되었습니다.", response, request.getRequestURI())
+                );
     }
 
 }
